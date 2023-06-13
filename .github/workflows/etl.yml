@@ -1,0 +1,48 @@
+name: ETL
+
+on:
+  workflow_call:
+    inputs:
+      endpoint:
+        required: true
+        type: string
+      table:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Authenticate Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: projects/108686647178/locations/global/workloadIdentityPools/github-fivethirtyeight/providers/github
+          service_account: github-fivethirtyeight@matheusccouto.iam.gserviceaccount.com
+
+      - name: Setup Google Cloud
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Extract from API and load to Google Cloud Storage
+        run: |
+          # Download and filter data
+          curl -s https://projects.fivethirtyeight.com/${{ inputs.endpoint }} > data.csv
+
+          # Upload data
+          gcloud storage cp data.csv gs://fivethirtyeight/${{ inputs.endpoint }}
+
+      - name: Load to Google BigQuery from Google Cloud Storage
+        run: |
+          bq load \
+            --autodetect \
+            --source_format=CSV \
+            --replace \
+            fivethirtyeight.${{ inputs.table }} \
+            gs://fivethirtyeight/${{ inputs.endpoint }}
