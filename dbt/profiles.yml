@@ -1,0 +1,10 @@
+fivethirtyeight:
+  outputs:
+    default:
+      type: bigquery
+      method: oauth
+      project: matheusccouto
+      dataset: fivethirtyeight
+      location: US
+      threads: 1
+  target: default

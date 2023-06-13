@@ -1,0 +1,26 @@
+name: 'fivethirtyeight'
+version: '1.0.0'
+config-version: 2
+
+profile: 'fivethirtyeight'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+snapshots:
+  fivethirtyeight:
+    +target_schema: fivethirtyeight
+    +strategy: check
+    +check_cols: all
+    spi_matches:
+      unique_key: season || '-' || league_id || '-' || team1 || '-' || team2
+    spi_matches_intl:
+      unique_key: season || '-' || league_id || '-' || team1 || '-' || team2
