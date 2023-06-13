@@ -18,8 +18,8 @@ jobs:
       endpoint: soccer-api/club/spi_matches.csv
       table: spi_matches
 
-  snapshot:
-    uses: ./.github/workflows/snapshot.yml
-    needs: etl
-    with:
-      table: spi_matches
+  # snapshot:
+  #   uses: ./.github/workflows/snapshot.yml
+  #   needs: etl
+  #   with:
+  #     table: spi_matches

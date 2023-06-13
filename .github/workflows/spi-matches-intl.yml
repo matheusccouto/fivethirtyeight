@@ -18,9 +18,8 @@ jobs:
       endpoint: soccer-api/international/spi_matches_intl.csv
       table: spi_matches_intl
 
-  snapshot:
-    uses: ./.github/workflows/snapshot.yml
-    needs: etl
-    with:
-      table: spi_matches_intl
-
+  # snapshot:
+  #   uses: ./.github/workflows/snapshot.yml
+  #   needs: etl
+  #   with:
+  #     table: spi_matches_intl
